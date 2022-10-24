@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components/macro';
-import { COLORS, FAMILIES } from '../../constants';
+// import { COLORS, FAMILIES } from '../../constants';
 
 const GlobalStyles = createGlobalStyle`
 /* http://meyerweb.com/eric/tools/css/reset/
