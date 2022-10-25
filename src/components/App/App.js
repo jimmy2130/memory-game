@@ -1,8 +1,9 @@
 import React from "react";
+import Board from '../Board';
 
 const App = () => {
   return (
-  	<div>Hello World!!</div>
+  	<Board/>
   );
 };
 

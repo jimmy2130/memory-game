@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components/macro';
-// import { COLORS, FAMILIES } from '../../constants';
+import { COLORS } from '../../constants';
 
 const GlobalStyles = createGlobalStyle`
 /* http://meyerweb.com/eric/tools/css/reset/
@@ -71,7 +71,17 @@ html {
 }
 
 html {
-
+	--color-primary: ${COLORS.primary};
+	--color-primary-light: ${COLORS.primaryLight};
+	--color-text: ${COLORS.text};
+	--color-modal-background: ${COLORS.modalBackground};
+	--color-backdrop: ${COLORS.backdrop};
+	--color-background: ${COLORS.background};
+	--color-secondary: ${COLORS.secondary};
+	--color-secondary-inactive: ${COLORS.secondaryInactive};
+	--color-secondary-hover: ${COLORS.secondaryHover};
+	--color-tertiary-text: ${COLORS.tertiaryText};
+	--color-tertiary-background: ${COLORS.tertiaryBackground};
 }
 
 body {
@@ -79,6 +89,8 @@ body {
 }
 
 html, body, #root {
+	font-family: 'Atkinson Hyperlegible', sans-serif;
+	font-weight: 700;
   height: 100%;
 }
 
