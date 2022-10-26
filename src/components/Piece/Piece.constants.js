@@ -6,36 +6,70 @@ export const BACKGROUND_STYLE = {
 	inactive: 'var(--color-secondary-inactive)'
 }
 
-export const reveal = keyframes`
+export const backgroundReveal = keyframes`
 	0% {background: ${BACKGROUND_STYLE['cover']};}
 	10% {background: ${BACKGROUND_STYLE['active']};}
 	100% {background: ${BACKGROUND_STYLE['active']};}
 `
 
-export const revealSuccess = keyframes`
+export const contentReveal = keyframes`
+	0% {opacity: 0;}
+	10% {opacity: 1;}
+	100% {opacity: 1;}
+`
+
+export const backgroundRevealSuccess = keyframes`
 	0% {background: ${BACKGROUND_STYLE['covor']};}
 	10% {background: ${BACKGROUND_STYLE['active']};}
 	90% {background: ${BACKGROUND_STYLE['active']};}
 	100% {background: ${BACKGROUND_STYLE['inactive']};}
 `
 
-export const success = keyframes`
+export const contentRevealSuccess = keyframes`
+	0% {opacity: 0;}
+	10% {opacity: 1;}
+	90% {opacity: 1;}
+	100% {opacity: 1;}
+`
+
+export const backgroundSuccess = keyframes`
 	0% {background: ${BACKGROUND_STYLE['active']};}
 	10% {background: ${BACKGROUND_STYLE['active']};}
 	90% {background: ${BACKGROUND_STYLE['active']};}
 	100% {background: ${BACKGROUND_STYLE['inactive']};}
 `
 
-export const revealFail = keyframes`
+export const contentSuccess = keyframes`
+	0% {opacity: 1;}
+	10% {opacity: 1;}
+	90% {opacity: 1;}
+	100% {opacity: 1;}
+`
+
+export const backgroundRevealFail = keyframes`
 	0% {background: ${BACKGROUND_STYLE['covor']};}
 	10% {background: ${BACKGROUND_STYLE['active']};}
 	90% {background: ${BACKGROUND_STYLE['active']};}
 	100% {background: ${BACKGROUND_STYLE['cover']};}
 `
 
-export const fail = keyframes`
+export const contentRevealFail = keyframes`
+	0% {opacity: 0;}
+	10% {opacity: 1;}
+	90% {opacity: 1;}
+	100% {opacity: 0;}
+`
+
+export const backgroundFail = keyframes`
 	0% {background: ${BACKGROUND_STYLE['active']};}
 	10% {background: ${BACKGROUND_STYLE['active']};}
 	90% {background: ${BACKGROUND_STYLE['active']};}
 	100% {background: ${BACKGROUND_STYLE['cover']};}
+`
+
+export const contentFail = keyframes`
+	0% {opacity: 1;}
+	10% {opacity: 1;}
+	90% {opacity: 1;}
+	100% {opacity: 0;}
 `

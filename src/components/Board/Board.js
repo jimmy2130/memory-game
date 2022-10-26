@@ -1,35 +1,23 @@
 import React from "react";
 import styled from 'styled-components/macro';
 import Piece from '../Piece';
-import { resetCover, setFail, setSuccess} from './Board.helpers';
-
-function getMatchStatus(game) {
-	const arr = game.filter(piece => piece.state === 'active').map(x => x.id)
-	if(arr.length === 0 || arr.length % 2 === 1)
-		return 'unknown'
-	if(Ans[arr[0]] === arr[1])
-		return 'success'
-	return 'fail'
-}
-
-// const random = [3, 3, 7, 7]
-
-const Ans = {
-	0: 1,
-	1: 0,
-	2: 3,
-	3: 2
-}
+import {
+	initializeGame,
+	getMatchStatus,
+	getAnswer,
+	resetCover,
+	setFail,
+	setSuccess
+} from './Board.helpers';
 
 const INACTIVE_STATES = ['cover-inactive', 'active', 'active-inactive']
 
-const Test = () => {
-	const [game, setGame] = React.useState([
-		{id: 0, content: 3, state: 'cover'},
-		{id: 1, content: 3, state: 'cover'},
-		{id: 2, content: 7, state: 'cover'},
-		{id: 3, content: 7, state: 'cover'},
-	])
+const Board = ({ size = 4, theme = 'icons', players = 1}) => {
+	const [game, setGame] = React.useState(() => initializeGame(size))
+	const [move, setMove] = React.useState(0)
+	const [, setPlayerStats] = React.useState(Array(players).fill(0))
+	const answerKey = getAnswer(game)
+
 	function reveal(id) {
 		let newGame = [...game]
 		const piece = newGame.find(g => g.id === id)
@@ -39,7 +27,7 @@ const Test = () => {
 
 		const newPiece = {...piece, state: 'active'}
 		newGame[pieceIndex] = newPiece
-		const matchStatus = getMatchStatus(newGame)
+		const matchStatus = getMatchStatus(newGame, answerKey)
 		// console.log(matchStatus)
 		if(matchStatus === 'unknown') {
 			newGame = resetCover(newGame)
@@ -47,11 +35,18 @@ const Test = () => {
 			setGame(newGame)
 		}
 		else if(matchStatus === 'fail') {
+			setMove(m => m + 1)
 			newGame = setFail(newGame, id)
 			// console.log('fail', newGame)
 			setGame(newGame)
 		}
 		else if(matchStatus === 'success') {
+			setMove(m => m + 1)
+			setPlayerStats(p => {
+				const newP = [...p]
+				newP[move % players]++
+				return newP
+			})
 			newGame = setSuccess(newGame, id)
 			// console.log('success', newGame)
 			setGame(newGame)
@@ -59,24 +54,30 @@ const Test = () => {
 	}
 
   return (
-  	<Wrapper>
+  	<Wrapper style={{
+  		'--num': size,
+  		'--size': size === 4 ? '118px' : '82px',
+  		'--gap': size === 4 ? '20px' : '16px',
+  	}}>
   	{
   		game.map(piece => (
   			<React.Fragment key={piece.id}>
-  				<Piece info={piece} reveal={reveal}/>
+  				<Piece info={piece} reveal={reveal} size={size} theme={theme}/>
   			</React.Fragment>
   		))
   	}
+{/*  	<div>Move: {move}</div>
+  	{
+  		playerStats.map((p, index) => <div key={index}>Player {index + 1}: {p}</div>)
+  	}*/}
   	</Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 16px;
+	display: grid;
+	grid-template-columns: repeat(var(--num), var(--size));
+	gap: var(--gap);
 `
 
-export default Test;
+export default Board;

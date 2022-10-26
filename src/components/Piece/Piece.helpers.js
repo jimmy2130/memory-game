@@ -1,48 +1,40 @@
 import {
-	BACKGROUND_STYLE,
-	reveal,
-	revealSuccess,
-	success,
-	revealFail,
-	fail
+	backgroundReveal,
+	backgroundRevealSuccess,
+	backgroundSuccess,
+	backgroundRevealFail,
+	backgroundFail,
+	contentReveal,
+	contentRevealSuccess,
+	contentSuccess,
+	contentRevealFail,
+	contentFail,
 } from './Piece.constants'
 
-
-
-export function getAction(state) {
+export function getBackgroundAnimation(state) {
 	if(state === 'active')
-		return 'reveal'
+		return backgroundReveal
 	if(state === 'cover-inactive')
-		return 'revealSuccess'
+		return backgroundRevealSuccess
 	if(state === 'active-inactive')
-		return 'success'
+		return backgroundSuccess
 	if(state === 'cover-cover')
-		return 'revealFail'
+		return backgroundRevealFail
 	if(state === 'active-cover')
-		return 'fail'
+		return backgroundFail
 	return undefined
 }
 
-export function getBackground(state) {
-	if(state === 'cover' || state === 'cover-cover' || state === 'cover-inactive') {
-		return BACKGROUND_STYLE['cover']
-	}
-	else if(state === 'active' || state === 'active-cover')
-		return BACKGROUND_STYLE['active']
-	else
-		return BACKGROUND_STYLE['inactive']
-}
-
-export function getAnimation(action) {
-	if(action === 'reveal')
-		return reveal
-	if(action === 'revealSuccess')
-		return revealSuccess
-	if(action === 'success')
-		return success
-	if(action === 'revealFail')
-		return revealFail
-	if(action === 'fail')
-		return fail
-	return undefined
+export function getTextAnimation(state) {
+	if(state === 'active')
+		return contentReveal
+	if(state === 'cover-inactive')
+		return contentRevealSuccess
+	if(state === 'active-inactive')
+		return contentSuccess
+	if(state === 'cover-cover')
+		return contentRevealFail
+	if(state === 'active-cover')
+		return contentFail
+	return undefined	
 }
