@@ -1,36 +1,42 @@
 import React from "react";
 import styled from 'styled-components/macro';
 import { GameContext } from '../GameProvider';
+import { QUERIES } from '../../constants';
 
 export function PlayerTag({id, label, children}) {
 	const { move, playerStats } = React.useContext(GameContext)
 	const currentPlayer = id === move % playerStats.length
 	return (
-		<Wrapper style={{
+		<PlayerTagWrapper style={{
 			'--background': currentPlayer ? 'var(--color-primary)' : 'var(--color-tertiary-background)'
 		}}>
-			<Label style={{
+			<PlayerLabel style={{
 				'--color': currentPlayer ? 'var(--color-text)' : 'var(--color-tertiary-text)'
 			}}>
 				{label}
-			</Label>
+			</PlayerLabel>
+			<MobilePlayerLabel style={{
+				'--color': currentPlayer ? 'var(--color-text)' : 'var(--color-tertiary-text)'
+			}}>
+				{label[0].toUpperCase()}{label[label.length - 1]}
+			</MobilePlayerLabel>
 			{children}
 			{currentPlayer && <CurrentTag>current turn</CurrentTag>}
 			{currentPlayer && <TriangleTip/>}
-		</Wrapper>
+		</PlayerTagWrapper>
 	)
 }
 
 export function BasicTag({label, children}) {
 	return (
-		<Wrapper style={{'--background': 'var(--color-tertiary-background)'}}>
-			<Label style={{'--color': 'var(--color-tertiary-text)'}}>{label}</Label>
+		<BasicTagWrapper style={{'--background': 'var(--color-tertiary-background)'}}>
+			<BasicLabel style={{'--color': 'var(--color-tertiary-text)'}}>{label}</BasicLabel>
 			{children}
-		</Wrapper>
+		</BasicTagWrapper>
 	)	
 }
 
-const Wrapper = styled.div`
+const PlayerTagWrapper = styled.div`
 	position: relative;
 	flex: 1;
 	padding: 24px;
@@ -42,11 +48,72 @@ const Wrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+
+	@media ${QUERIES.tabletAndDown} {
+		height: 80px;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: revert;
+		padding: 14px 16px 12px 16px;
+	}
+
+	@media ${QUERIES.phoneAndDown} {
+		height: 70px;
+		padding: 10px 12px;
+		align-items: center;
+	}
 `
 
-const Label = styled.span`
+const PlayerLabel = styled.span`
 	color: var(--color);
 	font-size: calc(18 / 16 * 1rem);
+
+	@media ${QUERIES.tabletAndDown} {
+		font-size: calc(15 / 16 * 1rem);
+	}
+
+	@media ${QUERIES.phoneAndDown} {
+		display: none
+	}
+`
+
+const MobilePlayerLabel = styled.span`
+	display: none;
+	@media ${QUERIES.phoneAndDown} {
+		display: block;
+		color: var(--color);
+		font-size: calc(15 / 16 * 1rem);
+	}
+`
+
+const BasicTagWrapper = styled.div`
+	position: relative;
+	flex: 1;
+	padding: 24px;
+	max-width: 256px;
+	height: 72px;
+	background: var(--background);
+	border-radius: 10px;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	@media ${QUERIES.phoneAndDown} {
+		padding: 10px 0px 0px 0px;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
+	}
+`
+
+const BasicLabel = styled.span`
+	color: var(--color);
+	font-size: calc(18 / 16 * 1rem);
+
+	@media ${QUERIES.phoneAndDown} {
+		font-size: calc(15 / 16 * 1rem);
+	}
 `
 
 const CurrentTag = styled.span`
@@ -60,6 +127,10 @@ const CurrentTag = styled.span`
 	color: var(--color-background);
 	letter-spacing: calc(5 / 16 * 1rem);
 	text-transform: uppercase;
+
+	@media ${QUERIES.tabletAndDown} {
+		display: none;
+	}
 `
 
 function TriangleTip() {

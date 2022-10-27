@@ -13,7 +13,7 @@ export const COLORS = {
 };
 
 export const BREAKPOINTS = {
-	tabletMax: 1000,
+	tabletMax: 850,
   phoneMax: 600,
 };
 

@@ -2,7 +2,8 @@ import React from "react";
 import styled from 'styled-components/macro';
 import ControlGroup from './ControlGroup';
 import UnstyledButton from '../UnstyledButton';
-import { GameContext } from '../GameProvider'
+import { GameContext } from '../GameProvider';
+import { QUERIES } from '../../constants';
 
 const StartPage = () => {
 	const { startGame } = React.useContext(GameContext)
@@ -27,18 +28,21 @@ const StartPage = () => {
 	  				name="theme"
 	  				displayedValues={['Numbers', 'Icons']}
 	  				title="Select Theme"
+	  				gap="30"
 	  			/>
 	  			<ControlGroup
 	  				values={[1, 2, 3, 4]}
 	  				name="players"
 	  				displayedValues={[1, 2, 3, 4]}
 	  				title="Numbers of Players"
+	  				gap="21"
 	  			/>
 	  			<ControlGroup
 	  				values={[4, 6]}
 	  				name="size"
 	  				displayedValues={['4x4', '6x6']}
 	  				title="Grid Size"
+	  				gap="30"
 	  			/>
 	  			<StartGameButton type="submit">Start Game</StartGameButton>
 	  		</Form>
@@ -61,9 +65,15 @@ const Title = styled.h1`
 	font-size: calc(40 / 16 * 1rem);
 	color: var(--color-text);
 	text-align: center;
+
+	@media ${QUERIES.phoneAndDown} {
+		font-size: calc(32 / 16 * 1rem);
+	}
 `
 
 const FormWrapper = styled.div`
+	padding-left: 56px;
+	padding-right: 56px;
 `
 
 const Form = styled.form`
@@ -76,6 +86,12 @@ const Form = styled.form`
 	display: flex;
 	flex-direction: column;
 	gap: 32px;
+
+	@media ${QUERIES.phoneAndDown} {
+		padding: 24px;
+		border-radius: 10px;
+		gap: 24px;
+	}
 `
 
 const StartGameButton = styled(UnstyledButton)`
@@ -88,6 +104,11 @@ const StartGameButton = styled(UnstyledButton)`
 	color: var(--color-text);
 	&:hover {
 		background: var(--color-primary-light);
+	}
+	@media ${QUERIES.phoneAndDown} {
+		height: 48px;
+		font-size: calc(18 / 16 * 1rem);
+		margin-top: 8px;
 	}
 `
 

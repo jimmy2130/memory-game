@@ -5,8 +5,9 @@ import Icon from '../Icon';
 import {
 	getBackgroundAnimation,
 	getTextAnimation
-} from './Piece.helpers'
-import { GameContext } from '../GameProvider'
+} from './Piece.helpers';
+import { GameContext } from '../GameProvider';
+import { QUERIES } from '../../constants';
 
 
 const Piece = ({ info }) => {
@@ -21,6 +22,7 @@ const Piece = ({ info }) => {
 			style={{
 				'--size': size === 4 ? '118px' : '82px',
 			}}
+			size={size}
 		>
 			<Text
 				action={state}
@@ -44,6 +46,11 @@ const Wrapper = styled(UnstyledButton)`
 
 	&:hover {
 		background: var(--color-secondary-hover);
+	}
+
+	@media ${QUERIES.phoneAndDown} {
+		width: ${p => p.size === '4' ? '72px' : '48px'};
+		height: ${p => p.size === '4' ? '72px' : '48px'};
 	}
 `
 

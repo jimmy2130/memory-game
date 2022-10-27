@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components/macro';
-import { GameContext } from '../GameProvider'
-import UnstyledButton from '../UnstyledButton'
-import { sortPlayerStats } from './GamePage.helpers'
+import { GameContext } from '../GameProvider';
+import UnstyledButton from '../UnstyledButton';
+import { sortPlayerStats } from './GamePage.helpers';
+import { QUERIES } from '../../constants';
 
 export function ResultDisplay() {
 	const { playerStats, restart, setNewGame } = React.useContext(GameContext)
@@ -13,34 +14,36 @@ export function ResultDisplay() {
 	return (
 		<>
 			<Overlay>
-				<Modal>
-					<Result>{tie ? 'It\'s a tie' : `Player ${sortedPlayerStats[0]['id'] + 1} Wins!`}</Result>
-					<Detail>Game over! Here are the results...</Detail>
-					<DisplayGroup>
-					{
-						sortedPlayerStats.map(p => (
-							<PlayerWrapper key={p.id} style={{
-								'--background': p.score === maxScore ? 'var(--color-background)' : 'var(--color-tertiary-background)'
-							}}>
-								<PlayerName style={{
-									'--name-color': p.score === maxScore ? 'var(--color-text)' : 'var(--color-tertiary-text)'
+				<ModalWrapper>
+					<Modal>
+						<Result>{tie ? 'It\'s a tie' : `Player ${sortedPlayerStats[0]['id'] + 1} Wins!`}</Result>
+						<Detail>Game over! Here are the results...</Detail>
+						<DisplayGroup>
+						{
+							sortedPlayerStats.map(p => (
+								<PlayerWrapper key={p.id} style={{
+									'--background': p.score === maxScore ? 'var(--color-background)' : 'var(--color-tertiary-background)'
 								}}>
-									{`Player ${p.id + 1} `}{p.score === maxScore && '(Winner!)'}
-								</PlayerName>
-								<PlayerValue style={{
-									'--value-color': p.score === maxScore ? 'var(--color-text)' : 'var(--color-secondary)'
-								}}>
-									{`${p.score} Pairs`}
-								</PlayerValue>
-							</PlayerWrapper>
-						))
-					}
-					</DisplayGroup>
-	  			<ButtonGroup>
-	  				<Restart onClick={restart}>Restart</Restart>
-	  				<NewGame onClick={setNewGame}>Setup New Game</NewGame>
-	  			</ButtonGroup>
-				</Modal>
+									<PlayerName style={{
+										'--name-color': p.score === maxScore ? 'var(--color-text)' : 'var(--color-tertiary-text)'
+									}}>
+										{`Player ${p.id + 1} `}{p.score === maxScore && '(Winner!)'}
+									</PlayerName>
+									<PlayerValue style={{
+										'--value-color': p.score === maxScore ? 'var(--color-text)' : 'var(--color-secondary)'
+									}}>
+										{`${p.score} Pairs`}
+									</PlayerValue>
+								</PlayerWrapper>
+							))
+						}
+						</DisplayGroup>
+		  			<ButtonGroup>
+		  				<Restart onClick={restart}>Restart</Restart>
+		  				<NewGame onClick={setNewGame}>Setup New Game</NewGame>
+		  			</ButtonGroup>
+					</Modal>
+				</ModalWrapper>
 			</Overlay>
 		</>
 	)
@@ -52,26 +55,28 @@ export function SingleResultDisplay({children}) {
 	return (
 		<>
 			<Overlay>
-				<Modal>
-					<Result>{'You did it!'}</Result>
-					<Detail>Game over! Here are the results...</Detail>
-					<DisplayGroup>
-					<>						
-						<PlayerWrapper style={{'--background': 'var(--color-tertiary-background)'}}>
-							<PlayerName style={{'--name-color': 'var(--color-tertiary-text)'}}>Time Elapsed</PlayerName>
-							<PlayerValue style={{'--value-color': 'var(--color-secondary)'}}>{children}</PlayerValue>
-						</PlayerWrapper>
-						<PlayerWrapper style={{'--background': 'var(--color-tertiary-background)'}}>
-							<PlayerName style={{'--name-color': 'var(--color-tertiary-text)'}}>Moves Taken</PlayerName>
-							<PlayerValue style={{'--value-color': 'var(--color-secondary)'}}>{`${move} Moves`}</PlayerValue>
-						</PlayerWrapper>
-					</>
-					</DisplayGroup>
-	  			<ButtonGroup>
-	  				<Restart onClick={restart}>Restart</Restart>
-	  				<NewGame onClick={setNewGame}>Setup New Game</NewGame>
-	  			</ButtonGroup>
-				</Modal>
+				<ModalWrapper>
+					<Modal>
+						<Result>{'You did it!'}</Result>
+						<Detail>Game over! Here are the results...</Detail>
+						<DisplayGroup>
+						<>
+							<PlayerWrapper style={{'--background': 'var(--color-tertiary-background)'}}>
+								<PlayerName style={{'--name-color': 'var(--color-tertiary-text)'}}>Time Elapsed</PlayerName>
+								<PlayerValue style={{'--value-color': 'var(--color-secondary)'}}>{children}</PlayerValue>
+							</PlayerWrapper>
+							<PlayerWrapper style={{'--background': 'var(--color-tertiary-background)'}}>
+								<PlayerName style={{'--name-color': 'var(--color-tertiary-text)'}}>Moves Taken</PlayerName>
+								<PlayerValue style={{'--value-color': 'var(--color-secondary)'}}>{`${move} Moves`}</PlayerValue>
+							</PlayerWrapper>
+						</>
+						</DisplayGroup>
+		  			<ButtonGroup>
+		  				<Restart onClick={restart}>Restart</Restart>
+		  				<NewGame onClick={setNewGame}>Setup New Game</NewGame>
+		  			</ButtonGroup>
+					</Modal>
+				</ModalWrapper>
 			</Overlay>
 		</>
 	)	
@@ -88,18 +93,27 @@ const Overlay = styled.div`
 	background: var(--color-backdrop);
 `
 
-const Modal = styled.div`
+const ModalWrapper = styled.div`
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
 	left: 0;
 	right: 0;
-	max-width: 654px;
+	max-width: calc(654px + 24px + 24px);
 	margin-left: auto;
 	margin-right: auto;
+`
+
+const Modal = styled.div`
+	margin-left: 24px;
+	margin-right: 24px;
+	padding: 52px 56px 68px 56px;
 	background: var(--color-modal-background);
 	border-radius: 20px;
-	padding: 52px 56px 68px 56px
+
+	@media ${QUERIES.phoneAndDown} {
+		padding: 32px 24px 24px 24px;
+	}
 `
 
 const Result = styled.div`
@@ -108,6 +122,12 @@ const Result = styled.div`
 	text-align: center;
 	line-height: 60px;
 	margin-bottom: 16px;
+
+	@media ${QUERIES.phoneAndDown} {
+		font-size: calc(24 / 16 * 1rem);
+		line-height: 30px;
+		margin-bottom: 8px;
+	}
 `
 
 const Detail = styled.div`
@@ -115,6 +135,11 @@ const Detail = styled.div`
 	color: var(--color-tertiary-text);
 	text-align: center;
 	margin-bottom: 40px;
+
+	@media ${QUERIES.phoneAndDown} {
+		font-size: calc(14 / 16 * 1rem);
+		margin-bottom: 24px;
+	}
 `
 
 const DisplayGroup = styled.div`
@@ -122,6 +147,11 @@ const DisplayGroup = styled.div`
 	flex-direction: column;
 	gap: 16px;
 	margin-bottom: 56px;
+
+	@media ${QUERIES.phoneAndDown} {
+		gap: 8px;
+		margin-bottom: 24px;
+	}
 `
 
 const PlayerWrapper = styled.div`
@@ -133,21 +163,37 @@ const PlayerWrapper = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+
+	@media ${QUERIES.phoneAndDown} {
+		padding-left: 16px;
+		padding-right: 16px;
+	}
 `
 
 const PlayerName = styled.div`
 	font-size: calc(18 / 16 * 1rem);
 	color: var(--name-color);
+
+	@media ${QUERIES.phoneAndDown} {
+		font-size: calc(13 / 16 * 1rem);
+	}
 `
 
 const PlayerValue = styled.div`
 	font-size: calc(32 / 16 * 1rem);
 	color: var(--value-color);
+
+	@media ${QUERIES.phoneAndDown} {
+		font-size: calc(20 / 16 * 1rem);
+	}
 `
 
 const ButtonGroup = styled.div`
 	display: flex;
 	gap: 16px;
+	@media ${QUERIES.phoneAndDown} {
+		flex-direction: column;
+	}
 `
 
 const Restart = styled(UnstyledButton)`
@@ -161,6 +207,9 @@ const Restart = styled(UnstyledButton)`
 	font-size: calc(20 / 16 * 1rem);
 	&:hover {
 		background: var(--color-primary-light);
+	}
+	@media ${QUERIES.phoneAndDown} {
+		min-height: 48px;
 	}
 `
 
@@ -176,5 +225,8 @@ const NewGame = styled(UnstyledButton)`
 	&:hover {
 		background: var(--color-secondary-hover);
 		color: var(--color-text);
+	}
+	@media ${QUERIES.phoneAndDown} {
+		min-height: 48px;
 	}
 `

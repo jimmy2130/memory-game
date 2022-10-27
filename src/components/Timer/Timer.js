@@ -1,5 +1,6 @@
 import React from "react";
 import styled from 'styled-components/macro';
+import { QUERIES } from '../../constants';
 
 function convertTime(time) {
 	let second = time % 60
@@ -43,6 +44,10 @@ const Wrapper = styled.span`
 	width: 48px;
 	color: var(--color-secondary);
 	font-size: calc(32 / 16 * 1rem);
+
+	@media ${QUERIES.phoneAndDown} {
+		font-size: calc(24 / 16 * 1rem);
+	}
 `
 
 const Digit = styled.span`
