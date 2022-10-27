@@ -6,9 +6,12 @@ import {
 	getBackgroundAnimation,
 	getTextAnimation
 } from './Piece.helpers'
+import { GameContext } from '../GameProvider'
 
 
-const Piece = ({ info, reveal, size, theme }) => {
+const Piece = ({ info }) => {
+	const { gameSettings, reveal } = React.useContext(GameContext)
+	const { size, theme }  = gameSettings
 	const { id, content, state } = info
 
   return (

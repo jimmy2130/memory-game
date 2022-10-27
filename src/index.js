@@ -8,6 +8,7 @@ import {
 	Route,
 	RouterProvider
 } from 'react-router-dom';
+import GameProvider from './components/GameProvider'
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -16,8 +17,10 @@ const router = createBrowserRouter(
 				path="/"
 				element={
 					<>
-						<App/>
-						<GlobalStyles/>
+						<GameProvider>
+							<App/>
+							<GlobalStyles/>
+						</GameProvider>
 					</>
 				}
 				errorElement={<p>Sorry. Something went wrong.</p>}

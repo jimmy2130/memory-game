@@ -52,7 +52,7 @@ table {
 *:before,
 *:after {
   box-sizing: border-box;
-  line-height: 1.5;
+  // line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
