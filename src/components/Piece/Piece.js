@@ -4,16 +4,58 @@ import UnstyledButton from '../UnstyledButton';
 import Icon from '../Icon';
 import {
 	getBackgroundAnimation,
-	getTextAnimation
+	getTextAnimation,
+	getEdge
 } from './Piece.helpers';
 import { GameContext } from '../GameProvider';
 import { QUERIES } from '../../constants';
 
-
-const Piece = ({ info }) => {
+const Piece = React.forwardRef(({ info }, pieceRef) => {
 	const { gameSettings, reveal } = React.useContext(GameContext)
 	const { size, theme }  = gameSettings
 	const { id, content, state } = info
+	const { rightEdge, leftEdge, bottomEdge, topEdge } = getEdge(size)
+
+	function getMap() {
+    if (!pieceRef.current) {
+      // Initialize the Map on first usage.
+      pieceRef.current = new Map();
+    }
+    return pieceRef.current;
+  }
+
+	function handleKeyDown(e) {
+		if(e.key === 'ArrowUp' || e.key === 'ArrowDown')
+			e.preventDefault()
+	}
+
+	function handleKeyUp(e, id) {
+  	const map = getMap()
+		if(e.key === 'ArrowRight') {
+			if(!rightEdge.includes(id)) {
+    		let node = map.get(id + 1)
+				node.focus()
+			}
+		}
+		else if(e.key === 'ArrowLeft') {
+			if(!leftEdge.includes(id)) {
+				let node = map.get(id - 1)
+				node.focus()
+			}
+		}
+		else if(e.key === 'ArrowDown') {
+			if(!bottomEdge.includes(id)) {
+				let node = map.get(id + size)
+				node.focus()
+			}
+		}
+		else if(e.key === 'ArrowUp') {
+			if(!topEdge.includes(id)) {
+				let node = map.get(id - size)
+				node.focus()
+			}
+		}
+	}
 
   return (
 		<Wrapper
@@ -21,18 +63,34 @@ const Piece = ({ info }) => {
 			action={state}
 			style={{
 				'--size': size === 4 ? '118px' : '82px',
+				'--mobile-size': size === 4 ? '72px' : '48px',
 			}}
-			size={size}
+			ref={(node) => {
+        const map = getMap();
+        if(node) {
+          map.set(id, node);
+        }
+        else {
+        	map.delete(id)
+        }
+      }}
+			tabIndex={id === 0 ? '0' : '-1'}
+			onKeyUp={(e) => handleKeyUp(e, id)}
+			onKeyDown={handleKeyDown}
 		>
 			<Text
 				action={state}
-				style={{'--font-size': size === 4 ? 'calc(56 / 16 * 1rem)' : 'calc(44 / 16 * 1rem)'}}
+				style={{
+					'--font-size': size === 4 ? 'calc(56 / 16 * 1rem)' : 'calc(44 / 16 * 1rem)',
+					'--mobile-font-size': size === 4 ? 'calc(40 / 16 * 1rem)' : 'calc(24 / 16 * 1rem)',
+				}}
+				size={size}
 			>
 				{theme === 'numbers' ? content : <Icon content={content}/>}
 			</Text>
 		</Wrapper>
   );
-};
+});
 
 const Wrapper = styled(UnstyledButton)`
 	width: var(--size);
@@ -49,8 +107,8 @@ const Wrapper = styled(UnstyledButton)`
 	}
 
 	@media ${QUERIES.phoneAndDown} {
-		width: ${p => p.size === '4' ? '72px' : '48px'};
-		height: ${p => p.size === '4' ? '72px' : '48px'};
+		width: var(--mobile-size);
+		height: var(--mobile-size);
 	}
 `
 
@@ -60,6 +118,10 @@ const Text = styled.span`
 	opacity: 0;
 	animation: ${p => getTextAnimation(p.action)} 600ms;
 	animation-fill-mode: both;
+
+	@media ${QUERIES.phoneAndDown} {
+		font-size: var(--mobile-font-size);
+	}
 `
 
 export default Piece;

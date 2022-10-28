@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App';
+import ErrorPage from './components/ErrorPage';
 import GlobalStyles from './components/GlobalStyles';
 import {
 	createBrowserRouter,
@@ -23,7 +24,12 @@ const router = createBrowserRouter(
 						</GameProvider>
 					</>
 				}
-				errorElement={<p>Sorry. Something went wrong.</p>}
+				errorElement={
+					<>
+						<ErrorPage/>
+						<GlobalStyles/>
+					</>
+				}
 			/>
 		</>
 	)

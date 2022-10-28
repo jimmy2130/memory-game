@@ -21,7 +21,7 @@ import {
 	faBug
 } from '@fortawesome/free-solid-svg-icons'
 
-const ICONLIST = [
+const ICON_LIST = [
 	faUmbrella,
 	faLandmark,
 	faFan,
@@ -45,7 +45,7 @@ const ICONLIST = [
 const Icon = ({ content }) => {
   return (
 		<span>
-			<FontAwesomeIcon icon={ICONLIST[content - 1]}/>
+			<FontAwesomeIcon icon={ICON_LIST[content - 1]}/>
 		</span>
   );
 };

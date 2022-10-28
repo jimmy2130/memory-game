@@ -98,6 +98,10 @@ input[type="search"]::-webkit-search-cancel-button {
 	appearance: none;
 }
 
+input[type="radio"] {
+	appearance: none;
+}
+
 
 `;
 

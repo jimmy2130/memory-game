@@ -39,8 +39,8 @@ export function ResultDisplay() {
 						}
 						</DisplayGroup>
 		  			<ButtonGroup>
-		  				<Restart onClick={restart}>Restart</Restart>
-		  				<NewGame onClick={setNewGame}>Setup New Game</NewGame>
+		  				<PrimaryButton onClick={restart}>Restart</PrimaryButton>
+		  				<SecondaryButton onClick={setNewGame}>Setup New Game</SecondaryButton>
 		  			</ButtonGroup>
 					</Modal>
 				</ModalWrapper>
@@ -58,7 +58,7 @@ export function SingleResultDisplay({children}) {
 				<ModalWrapper>
 					<Modal>
 						<Result>{'You did it!'}</Result>
-						<Detail>Game over! Here are the results...</Detail>
+						<Detail>Game over! Here’s how you got on...</Detail>
 						<DisplayGroup>
 						<>
 							<PlayerWrapper style={{'--background': 'var(--color-tertiary-background)'}}>
@@ -72,8 +72,8 @@ export function SingleResultDisplay({children}) {
 						</>
 						</DisplayGroup>
 		  			<ButtonGroup>
-		  				<Restart onClick={restart}>Restart</Restart>
-		  				<NewGame onClick={setNewGame}>Setup New Game</NewGame>
+		  				<PrimaryButton onClick={restart}>Restart</PrimaryButton>
+		  				<SecondaryButton onClick={setNewGame}>Setup New Game</SecondaryButton>
 		  			</ButtonGroup>
 					</Modal>
 				</ModalWrapper>
@@ -102,11 +102,11 @@ const ModalWrapper = styled.div`
 	max-width: calc(654px + 24px + 24px);
 	margin-left: auto;
 	margin-right: auto;
+	padding-left: 24px;
+	padding-right: 24px;
 `
 
 const Modal = styled.div`
-	margin-left: 24px;
-	margin-right: 24px;
 	padding: 52px 56px 68px 56px;
 	background: var(--color-modal-background);
 	border-radius: 20px;
@@ -196,7 +196,7 @@ const ButtonGroup = styled.div`
 	}
 `
 
-const Restart = styled(UnstyledButton)`
+const PrimaryButton = styled(UnstyledButton)`
 	flex: 1;
 	height: 52px;
 	display: grid;
@@ -210,10 +210,11 @@ const Restart = styled(UnstyledButton)`
 	}
 	@media ${QUERIES.phoneAndDown} {
 		min-height: 48px;
+		font-size: calc(18 / 16 * 1rem);
 	}
 `
 
-const NewGame = styled(UnstyledButton)`
+const SecondaryButton = styled(UnstyledButton)`
 	flex: 1;
 	height: 52px;
 	display: grid;
@@ -228,5 +229,6 @@ const NewGame = styled(UnstyledButton)`
 	}
 	@media ${QUERIES.phoneAndDown} {
 		min-height: 48px;
+		font-size: calc(18 / 16 * 1rem);
 	}
 `

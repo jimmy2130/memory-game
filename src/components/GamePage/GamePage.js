@@ -6,22 +6,28 @@ import { PlayerTag, BasicTag } from './PlayerTag';
 import { ResultDisplay, SingleResultDisplay } from './ResultDisplay';
 import { GameContext } from '../GameProvider';
 import Timer from '../Timer';
+import MobileMenu from '../MobileMenu';
 import { QUERIES } from '../../constants';
 
 const GamePage = () => {
+	const [showMobileMenu, setShowMobileMenu] = React.useState(false)
+	const closeMobileMenu = () => setShowMobileMenu(false)
 	const { restart, setNewGame, move, playerStats, gameSettings, timerKey } = React.useContext(GameContext)
 	const currentScore = playerStats.reduce((acc, cur) => acc + cur.score, 0)
 	const totalScore = gameSettings.size * gameSettings.size / 2
-
+	function handleKeyUp(e) {
+		if(e.key === 'Escape' && showMobileMenu)
+			setShowMobileMenu(false)
+	}
   return (
-  	<Wrapper>
+  	<Wrapper onKeyUp={handleKeyUp}>
   		<div>
 	  		<Header>
 	  			<Title>memory</Title>
 	  			<ButtonGroup>
 	  				<Restart onClick={restart}>Restart</Restart>
 	  				<NewGame onClick={setNewGame}>New Game</NewGame>
-	  				<Menu onClick={(e) => e.preventDefault()}>Menu</Menu>
+	  				<Menu onClick={() => setShowMobileMenu(true)}>Menu</Menu>
 	  			</ButtonGroup>
 	  		</Header>
   		</div>
@@ -51,7 +57,7 @@ const GamePage = () => {
 									<Anchor>
 										00:00
 										<MidTimerWrapper>
-											<Timer key={timerKey} running={currentScore !== totalScore}/>
+											<Timer key={timerKey} running={currentScore !== totalScore && !showMobileMenu}/>
 										</MidTimerWrapper>
 									</Anchor>
 								</SinglePlayerTagValue>
@@ -72,17 +78,22 @@ const GamePage = () => {
 						<Anchor>
 							00:00
 							<FinalTimerWrapper>
-								<Timer key={timerKey} running={currentScore !== totalScore}/>
+								<Timer
+									key={timerKey}
+									running={currentScore !== totalScore  && !showMobileMenu}
+									end
+								/>
 							</FinalTimerWrapper>
 						</Anchor>
 					</SingleResultDisplay>
 				</SingleResultDisplayWrapper>
+				{showMobileMenu && <MobileMenu closeMobileMenu={closeMobileMenu}/>}
 			</div>
   	</Wrapper>
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.main`
 	height: 100%;
 	display: flex;
 	flex-direction: column;
@@ -168,7 +179,7 @@ const BoardWrapper = styled.div`
 `
 
 const MultiplePlayerTagGroup = styled.div`
-	// border: 1px solid;
+	--delay: 550ms;
 	max-width: 1110px;
 	padding: 0px 40px 60px 40px;
 	margin-left: auto;
@@ -189,7 +200,6 @@ const MultiplePlayerTagGroup = styled.div`
 `
 
 const SinglePlayerTagGroup = styled.div`
-	// border: 1px solid;
 	max-width: 1110px;
 	padding: 0px 40px 60px 40px;
 	margin-left: auto;
@@ -206,6 +216,9 @@ const SinglePlayerTagGroup = styled.div`
 const MultiplePlayerTagValue = styled.span`
 	color: var(--color);
 	font-size: calc(32 / 16 * 1rem);
+
+	transition: color;
+	transition-delay: var(--delay);
 
 	@media ${QUERIES.tabletAndDown} {
 		font-size: calc(24 / 16 * 1rem);
@@ -224,6 +237,7 @@ const SinglePlayerTagValue = styled.span`
 const Anchor = styled.span`
 	position: relative;
 	color: var(--color-tertiary-background);
+	user-select: none;
 `
 
 const MidTimerWrapper = styled.span`
@@ -232,7 +246,7 @@ const MidTimerWrapper = styled.span`
 	left: 0;
 
 	@media ${QUERIES.phoneAndDown} {
-		left: -14px;
+		left: -7px;
 	}
 `
 
@@ -240,6 +254,10 @@ const FinalTimerWrapper = styled.span`
 	position: absolute;
 	top: 0;
 	left: 0;
+
+	@media ${QUERIES.phoneAndDown} {
+		left: -15px;
+	}
 `
 
 const SingleResultDisplayWrapper = styled.div`

@@ -10,13 +10,15 @@ export default function ControlGroup({ values, name, displayedValues, title, gap
 			{
 				values.map((v, i) => (
 					<React.Fragment key={displayedValues[i]}>
-						<Input
-							type="radio"
-							id={displayedValues[i]}
-							name={name}
-							value={v}
-						/>
-						<Label htmlFor={displayedValues[i]}>{displayedValues[i]}</Label>
+						<LabelWrapper>
+							<Input
+								type="radio"
+								id={displayedValues[i]}
+								name={name}
+								value={v}
+							/>
+							<Label htmlFor={displayedValues[i]}>{displayedValues[i]}</Label>
+						</LabelWrapper>
 					</React.Fragment>
 				))
 			}
@@ -45,18 +47,30 @@ const ControlWrapper = styled.div`
 	}
 `
 
+const LabelWrapper = styled.span`
+	position: relative;
+	flex: 1;
+`
+
 const Input = styled.input`
-	display: none;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	cursor: pointer;
+	border-radius: 5000px;
 `
 
 const Label = styled.label`
-	flex: 1;
 	height: 52px;
 	background: var(--color-secondary-inactive);
 	color: var(--color-text);
 	border-radius: 5000px;
 	font-size: calc(26 / 16 * 1rem);
-	&: hover {
+	${LabelWrapper}:hover & {
 		background: var(--color-secondary-hover);
 	}
 	${Input}:checked + & {

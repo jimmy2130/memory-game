@@ -62,11 +62,15 @@ export default function useGame() {
 		setPlayerStats(null)
 	}
 
-	function startGame(props) {
-		setGameSettings(props)
-		setGame(() => initializeGame(props.size))
+	function startGame({size, players, theme}) {
+		setGameSettings({
+			size: parseInt(size),
+			players: parseInt(players),
+			theme: theme,
+		})
+		setGame(() => initializeGame(parseInt(size)))
 		let stats = []
-		for(let i = 0; i < props.players; i++) {
+		for(let i = 0; i < parseInt(players); i++) {
 			stats.push({id: i, score: 0})
 		}
 		setPlayerStats(stats)
@@ -85,12 +89,28 @@ export default function useGame() {
 	}
 }
 
+function getRandomNumArray() {
+	let set = new Set()
+	while(set.size < 8)
+		set.add(Math.floor(Math.random() * 16) + 1)
+	return [...set]
+}
+
 function getRandomBoard(size) {
 	let random = []
 	let board = []
-	for(let i = 1; i <= size * size / 2; i++) {
-		board.push(i)
-		board.push(i)
+	if(size === 4) {
+		let randomNum = getRandomNumArray()
+		for(let i = 0; i < randomNum.length; i++) {
+			board.push(randomNum[i])
+			board.push(randomNum[i])
+		}
+	}
+	else {
+		for(let i = 1; i <= size * size / 2; i++) {
+			board.push(i)
+			board.push(i)
+		}
 	}
 	for(let i = 0; i < size * size; i++)
 		random.push(Math.random())

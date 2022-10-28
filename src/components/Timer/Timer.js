@@ -1,40 +1,29 @@
 import React from "react";
 import styled from 'styled-components/macro';
+import useTimer from './use-timer.hook';
+import { convertTime } from './Timer.helpers';
 import { QUERIES } from '../../constants';
 
-function convertTime(time) {
-	let second = time % 60
-	let minute = ((time - second) / 60).toString().padStart(2, '0').split('')
-	second = second.toString().padStart(2, '0').split('')
-	return [...minute, ':', ...second].map((t, i) => ({id: i, digit: t}))
-}
-
 const LEFT = ['0px', '23px', '36px', '49px', '72px']
+const MOBILE_LEFT = ['0px', '23px', '31px', '38px', '61px']
 const NUM_POS = ['end', 'start', 'center', 'end', 'start']
 
-const Timer = ({ running = false }) => {
-	const [time, setTime] = React.useState(0)
-	React.useEffect(() => {
-		let timeoutId
-		if(running && time < 99 * 60 + 59) {
-			timeoutId = window.setTimeout(() => setTime(t => t + 1), 1000)
-		}
-		return () => {
-			window.clearTimeout(timeoutId)
-		}
-	})
+const Timer = ({ running = false, end = false }) => {
+	const time = useTimer(running)
 	const convertedTime = convertTime(time)
   return (
   	<>
-  		<Wrapper>
+  		<Wrapper style={{
+  			'--mobile-font-size': end ? 'calc(20 / 16 * 1rem)' : 'calc(24 / 16 * 1rem)'
+  		}}>
   		{
   			convertedTime.map((t, i) => <Digit key={t.id} style={{
   				'--left': LEFT[i],
+  				'--mobile-left': MOBILE_LEFT[i],
   				'--pos': NUM_POS[i]
   			}}>{t.digit}</Digit>)
   		}
   		</Wrapper>
-  		{/*<button onClick={() => setRunning(r => !r)}>Pause</button>*/}
   	</>
   );
 };
@@ -46,7 +35,7 @@ const Wrapper = styled.span`
 	font-size: calc(32 / 16 * 1rem);
 
 	@media ${QUERIES.phoneAndDown} {
-		font-size: calc(24 / 16 * 1rem);
+		font-size: var(--mobile-font-size);
 	}
 `
 
@@ -54,10 +43,13 @@ const Digit = styled.span`
 	position: absolute;
 	top: 0;
 	left: var(--left);
-	// border: 1px solid;
 	width: 24px;
 	display: grid;
 	place-content: center var(--pos);
+
+	@media ${QUERIES.phoneAndDown} {
+		left: var(--mobile-left);
+	}
 
 `
 

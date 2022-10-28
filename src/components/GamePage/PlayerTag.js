@@ -1,6 +1,7 @@
 import React from "react";
 import styled from 'styled-components/macro';
 import { GameContext } from '../GameProvider';
+import TriangleTip from './TriangleTip';
 import { QUERIES } from '../../constants';
 
 export function PlayerTag({id, label, children}) {
@@ -21,8 +22,8 @@ export function PlayerTag({id, label, children}) {
 				{label[0].toUpperCase()}{label[label.length - 1]}
 			</MobilePlayerLabel>
 			{children}
-			{currentPlayer && <CurrentTag>current turn</CurrentTag>}
-			{currentPlayer && <TriangleTip/>}
+			<CurrentTag style={{'--opacity': currentPlayer ? 1 : 0}}>current turn</CurrentTag>
+			<TriangleTip currentPlayer={currentPlayer}/>
 		</PlayerTagWrapper>
 	)
 }
@@ -49,6 +50,9 @@ const PlayerTagWrapper = styled.div`
 	justify-content: space-between;
 	align-items: center;
 
+	transition: background;
+	transition-delay: var(--delay);
+
 	@media ${QUERIES.tabletAndDown} {
 		height: 80px;
 		flex-direction: column;
@@ -68,6 +72,9 @@ const PlayerLabel = styled.span`
 	color: var(--color);
 	font-size: calc(18 / 16 * 1rem);
 
+	transition: color;
+	transition-delay: var(--delay);
+
 	@media ${QUERIES.tabletAndDown} {
 		font-size: calc(15 / 16 * 1rem);
 	}
@@ -83,6 +90,8 @@ const MobilePlayerLabel = styled.span`
 		display: block;
 		color: var(--color);
 		font-size: calc(15 / 16 * 1rem);
+		transition: color;
+		transition-delay: var(--delay);
 	}
 `
 
@@ -127,28 +136,12 @@ const CurrentTag = styled.span`
 	color: var(--color-background);
 	letter-spacing: calc(5 / 16 * 1rem);
 	text-transform: uppercase;
+	opacity: var(--opacity);
+
+	transition: opacity;
+	transition-delay: var(--delay);
 
 	@media ${QUERIES.tabletAndDown} {
 		display: none;
 	}
-`
-
-function TriangleTip() {
-	return (
-		<TipWrapper>
-			<svg width="38" height="19" viewBox="0 0 38 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-				<path fillRule="evenodd" clipRule="evenodd" d="M0 19L19 0L38 19H0Z" fill="var(--color-primary)"/>
-			</svg>
-		</TipWrapper>
-	)
-}
-
-const TipWrapper = styled.span`
-	position: absolute;
-	top: -19px;
-	left: 0px;
-	right: 0px;
-	margin-left: auto;
-	margin-right: auto;
-	width: max-content;	
 `
