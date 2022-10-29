@@ -1,5 +1,6 @@
 import React from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import VisuallyHidden from '../VisuallyHidden';
 import {
 	faUmbrella,
 	faLandmark,
@@ -42,9 +43,31 @@ const ICON_LIST = [
 	faBug,
 ]
 
+const VOICEOVER_LIST = [
+	'Umbrella',
+	'Landmark',
+	'Fan',
+	'Compass Drafting',
+	'Car',
+	'Hand Spock',
+	'Wrench',
+	'Flask',
+	'Anchor',
+	'Tree',
+	'Feather',
+	'Ribbon',
+	'Plant Wilt',
+	'Plane',
+	'Syringe',
+	'Fish Fins',
+	'Monument',
+	'Bug',
+]
+
 const Icon = ({ content }) => {
   return (
 		<span>
+			<VisuallyHidden>{VOICEOVER_LIST[content - 1]}</VisuallyHidden>
 			<FontAwesomeIcon icon={ICON_LIST[content - 1]}/>
 		</span>
   );

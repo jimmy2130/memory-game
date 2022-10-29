@@ -85,6 +85,7 @@ const Piece = React.forwardRef(({ info }, pieceRef) => {
 					'--mobile-font-size': size === 4 ? 'calc(40 / 16 * 1rem)' : 'calc(24 / 16 * 1rem)',
 				}}
 				size={size}
+				aria-hidden={state === 'cover' ? "true" : "false"}
 			>
 				{theme === 'numbers' ? content : <Icon content={content}/>}
 			</Text>
@@ -114,7 +115,7 @@ const Wrapper = styled(UnstyledButton)`
 
 const Text = styled.span`
 	font-size: var(--font-size);
-	color: var(--color-text);
+	color: var(--color-secondary);
 	opacity: 0;
 	animation: ${p => getTextAnimation(p.action)} 600ms;
 	animation-fill-mode: both;

@@ -1,9 +1,9 @@
 import styled from 'styled-components/macro';
 import { QUERIES } from '../../constants';
 
-export default function TriangleTip({ currentPlayer }) {
+export default function TriangleTip({ hightlight }) {
 	return (
-		<TipWrapper style={{'--opacity': currentPlayer ? 1 : 0}}>
+		<TipWrapper style={{'--opacity': hightlight ? 1 : 0}}>
 			<svg width="38" height="19" viewBox="0 0 38 19" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path fillRule="evenodd" clipRule="evenodd" d="M0 19L19 0L38 19H0Z" fill="var(--color-primary)"/>
 			</svg>

@@ -5,7 +5,7 @@ import UnstyledButton from '../UnstyledButton';
 import { sortPlayerStats } from './GamePage.helpers';
 import { QUERIES } from '../../constants';
 
-export function ResultDisplay() {
+export function MultiplePlayerResultDisplay() {
 	const { playerStats, restart, setNewGame } = React.useContext(GameContext)
 	let sortedPlayerStats = sortPlayerStats([...playerStats])
 
@@ -49,7 +49,7 @@ export function ResultDisplay() {
 	)
 }
 
-export function SingleResultDisplay({children}) {
+export function SinglePlayerResultDisplay({children, createNewTimer}) {
 	const { move, restart, setNewGame } = React.useContext(GameContext)
 
 	return (
@@ -72,7 +72,10 @@ export function SingleResultDisplay({children}) {
 						</>
 						</DisplayGroup>
 		  			<ButtonGroup>
-		  				<PrimaryButton onClick={restart}>Restart</PrimaryButton>
+		  				<PrimaryButton onClick={() => {
+		  					createNewTimer()
+		  					restart()
+		  				}}>Restart</PrimaryButton>
 		  				<SecondaryButton onClick={setNewGame}>Setup New Game</SecondaryButton>
 		  			</ButtonGroup>
 					</Modal>
@@ -203,7 +206,7 @@ const PrimaryButton = styled(UnstyledButton)`
 	place-content: center;
 	background: var(--color-primary);
 	border-radius: 5000px;
-	color: var(--color-text);
+	color: var(--color-secondary);
 	font-size: calc(20 / 16 * 1rem);
 	&:hover {
 		background: var(--color-primary-light);

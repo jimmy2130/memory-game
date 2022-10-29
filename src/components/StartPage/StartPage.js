@@ -7,7 +7,7 @@ import { QUERIES } from '../../constants';
 
 const StartPage = () => {
 	const { startGame } = React.useContext(GameContext)
-	const [errorMessage, setErrorMessage] = React.useState(false)
+	const [errorMessage, setErrorMessage] = React.useState('')
 
 	function handleForm(e) {
 		e.preventDefault()
@@ -52,7 +52,7 @@ const StartPage = () => {
 	  				title="Grid Size"
 	  				gap="30"
 	  			/>
-	  			<StartGameButton type="submit">Start Game</StartGameButton>
+	  			<PrimaryButton type="submit">Start Game</PrimaryButton>
 	  			<ErrorMessage>{errorMessage}</ErrorMessage>
 	  		</Form>
   		</FormWrapper>
@@ -109,12 +109,12 @@ const Form = styled.form`
 	}
 `
 
-const StartGameButton = styled(UnstyledButton)`
+const PrimaryButton = styled(UnstyledButton)`
 	height: 70px;
 	background: var(--color-primary);
 	border-radius: 5000px;
 	font-size: calc(32 / 16 * 1rem);
-	color: var(--color-text);
+	color: var(--color-secondary);
 	&:hover {
 		background: var(--color-primary-light);
 	}

@@ -3,32 +3,36 @@ import styled from 'styled-components/macro';
 import { GameContext } from '../GameProvider';
 import TriangleTip from './TriangleTip';
 import { QUERIES } from '../../constants';
+import { setHighlight } from './GamePage.helpers';
 
-export function PlayerTag({id, label, children}) {
-	const { move, playerStats } = React.useContext(GameContext)
+export function MultiplePlayerTag({id, label, children}) {
+	const { move, playerStats, gameSettings } = React.useContext(GameContext)
+	const currentScore = playerStats.reduce((acc, cur) => acc + cur.score, 0)
+	const totalScore = gameSettings.size * gameSettings.size / 2
+	const end = currentScore === totalScore
 	const currentPlayer = id === move % playerStats.length
 	return (
 		<PlayerTagWrapper style={{
-			'--background': currentPlayer ? 'var(--color-primary)' : 'var(--color-tertiary-background)'
+			'--background': setHighlight(end, currentPlayer) ? 'var(--color-primary)' : 'var(--color-tertiary-background)'
 		}}>
 			<PlayerLabel style={{
-				'--color': currentPlayer ? 'var(--color-text)' : 'var(--color-tertiary-text)'
+				'--color': setHighlight(end, currentPlayer) ? 'var(--color-secondary)' : 'var(--color-tertiary-text)'
 			}}>
 				{label}
 			</PlayerLabel>
 			<MobilePlayerLabel style={{
-				'--color': currentPlayer ? 'var(--color-text)' : 'var(--color-tertiary-text)'
+				'--color': setHighlight(end, currentPlayer) ? 'var(--color-secondary)' : 'var(--color-tertiary-text)'
 			}}>
 				{label[0].toUpperCase()}{label[label.length - 1]}
 			</MobilePlayerLabel>
 			{children}
-			<CurrentTag style={{'--opacity': currentPlayer ? 1 : 0}}>current turn</CurrentTag>
-			<TriangleTip currentPlayer={currentPlayer}/>
+			<CurrentTag style={{'--opacity': setHighlight(end, currentPlayer) ? 1 : 0}}>current turn</CurrentTag>
+			<TriangleTip hightlight={setHighlight(end, currentPlayer)}/>
 		</PlayerTagWrapper>
 	)
 }
 
-export function BasicTag({label, children}) {
+export function SinglePlayerTag({label, children}) {
 	return (
 		<BasicTagWrapper style={{'--background': 'var(--color-tertiary-background)'}}>
 			<BasicLabel style={{'--color': 'var(--color-tertiary-text)'}}>{label}</BasicLabel>

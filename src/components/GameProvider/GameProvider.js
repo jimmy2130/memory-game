@@ -1,5 +1,5 @@
 import React from "react";
-import useGame from '../../hooks/use-game.hook'
+import useGame from './use-game.hook'
 
 export const GameContext = React.createContext()
 

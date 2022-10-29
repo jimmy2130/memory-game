@@ -4,7 +4,7 @@ import { GameContext } from '../GameProvider';
 import UnstyledButton from '../UnstyledButton';
 import useModal from './use-modal.hook';
 
-export default function MobileMenu({ closeMobileMenu }) {
+export default function MobileMenu({ closeMobileMenu, createNewTimer }) {
 	const { restart, setNewGame } = React.useContext(GameContext)
 	const {
 		modalRef,
@@ -29,8 +29,9 @@ export default function MobileMenu({ closeMobileMenu }) {
 		  					ref={firstBtnRef}
 		  					onKeyDown={backToLast}
 		  					onClick={() => {
-		  					restart()
-		  					closeMobileMenu()
+			  					createNewTimer()
+			  					restart()
+			  					closeMobileMenu()
 		  				}}>Restart</PrimaryButton>
 		  				<SecondaryButton onClick={setNewGame}>Setup New Game</SecondaryButton>
 		  				<SecondaryButton
@@ -86,7 +87,7 @@ const PrimaryButton = styled(UnstyledButton)`
 	place-content: center;
 	background: var(--color-primary);
 	border-radius: 5000px;
-	color: var(--color-text);
+	color: var(--color-secondary);
 	font-size: calc(20 / 16 * 1rem);
 	&:hover {
 		background: var(--color-primary-light);

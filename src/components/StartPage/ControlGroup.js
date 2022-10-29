@@ -67,13 +67,15 @@ const Input = styled.input`
 const Label = styled.label`
 	height: 52px;
 	background: var(--color-secondary-inactive);
-	color: var(--color-text);
+	color: var(--color-secondary);
 	border-radius: 5000px;
 	font-size: calc(26 / 16 * 1rem);
 	${LabelWrapper}:hover & {
+		color: var(--color-text);
 		background: var(--color-secondary-hover);
 	}
 	${Input}:checked + & {
+		color: var(--color-text);
 		background: var(--color-secondary);
 	}
 	display: grid;

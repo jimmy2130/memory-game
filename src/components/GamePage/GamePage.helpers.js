@@ -14,3 +14,11 @@ export function sortPlayerStats(sortedPlayerStats) {
 	}
 	return sortedPlayerStats
 }
+
+export function setHighlight(end, currentPlayer) {
+	if(end)
+		return false
+	if(currentPlayer)
+		return true
+	return false
+}
